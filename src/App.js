@@ -9,6 +9,9 @@ export class App extends Component {
     super(props);
     this.state = {
       data: {},
+      viewMap:false,
+      errorMesage: false,
+      message:"Unable to geocode"
     };
   }
 
@@ -19,20 +22,26 @@ export class App extends Component {
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${locationName}&format=json`
     );
-    this.setState({
-      data: result.data[0],
-    });
+    try{
+      this.setState({
+        data: result.data[0],
+        viewMap: true
+      });
+
+    }catch{
+      this.setState({
+        errorMesage: true
+        // mapData:map.mapData
+        // mapData:map.mapData[0]
+      });
+
+    }
     // let latData = this.state.data.lat;
     // let lonData = this.state.data.lon;
     // console.log(this.state.data.lat);
     // const map = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${latData},${lonData}&zoom=1-18`);
     console.log(result.data[0]);
     // console.log(map)
-    this.setState({
-      data: result.data[0],
-      // mapData:map.mapData
-      // mapData:map.mapData[0]
-    });
   };
   render() {
     return (
@@ -72,8 +81,15 @@ export class App extends Component {
         </ListGroup>
         {/* <img src = {`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} alt = 'map'/> */}
 
+        { this.state.viewMap &&
         <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} fluid />
-        
+        }
+        {
+          this.state.errorMesage &&
+          this.state.message
+        }
+
+            
       </div>
     );
   }
