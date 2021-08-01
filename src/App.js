@@ -3,6 +3,7 @@ import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ListGroup from "react-bootstrap/ListGroup";
 import Image from 'react-bootstrap/Image'
+import './App.css'
 
 export class App extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ export class App extends Component {
           )}
         </div> */}
 
-        <ListGroup>
+        <ListGroup id = "group">
           <ListGroup.Item variant="primary">
           {this.state.data.lon && <p>Longitude: {this.state.data.lon}</p>}
           </ListGroup.Item>
@@ -82,7 +83,7 @@ export class App extends Component {
         {/* <img src = {`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} alt = 'map'/> */}
 
         { this.state.viewMap &&
-        <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} fluid />
+        <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} id = "img" fluid />
         }
         {
           this.state.errorMesage &&
