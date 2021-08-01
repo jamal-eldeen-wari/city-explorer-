@@ -24,12 +24,15 @@ well this application will use React, javascript and external API.
 
 ## Credit and Collaborations
 
-Name of feature: ________________________________
+Name of feature: Map
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: about 2 hours
 
-Start time: _____
+Start time: 3:34
 
-Finish time: _____
+Finish time: 7:14
 
-Actual time needed to complete: _____
+Actual time needed to complete: about 4 hours
+
+# web request-response cycle:
+Image is available in public folder of this project.
