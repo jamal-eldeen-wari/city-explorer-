@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import ListGroup from "react-bootstrap/ListGroup";
+import Image from 'react-bootstrap/Image'
 
 export class App extends Component {
   constructor(props) {
@@ -17,9 +19,19 @@ export class App extends Component {
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${locationName}&format=json`
     );
-    console.log(result.data[0]);
     this.setState({
       data: result.data[0],
+    });
+    // let latData = this.state.data.lat;
+    // let lonData = this.state.data.lon;
+    // console.log(this.state.data.lat);
+    // const map = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${latData},${lonData}&zoom=1-18`);
+    console.log(result.data[0]);
+    // console.log(map)
+    this.setState({
+      data: result.data[0],
+      // mapData:map.mapData
+      // mapData:map.mapData[0]
     });
   };
   render() {
@@ -58,6 +70,10 @@ export class App extends Component {
           )}
           </ListGroup.Item>
         </ListGroup>
+        {/* <img src = {`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} alt = 'map'/> */}
+
+        <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} fluid />
+        
       </div>
     );
   }
