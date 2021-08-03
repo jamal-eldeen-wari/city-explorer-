@@ -9,6 +9,7 @@ export class App extends Component {
     super(props);
     this.state = {
       data: {},
+      forecastData:[],
       viewMap:false,
       errorMesage: false,
       message:"Unable to geocode"
@@ -22,9 +23,13 @@ export class App extends Component {
     const result = await axios.get(
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${locationName}&format=json`
     );
+    const locationIQData = result.data[0];
+    const cityName= locationIQData.display_name.split(',')[0];
+    const forecast = await axios.get(`${process.env.REACT_APP_SERVER_URL}/weather?searchQuery=${cityName}&lat=${locationIQData.lat}&lon=${locationIQData.lon}`)
     try{
       this.setState({
-        data: result.data[0],
+        data: locationIQData.data,
+        forcastData:forecast,
         viewMap: true
       });
 
@@ -88,6 +93,22 @@ export class App extends Component {
           this.state.errorMesage &&
           this.state.message
         }
+
+        {this.state.forcastData &&
+        this.state.forecastData.map(weather =>{
+          return(
+            <section>
+              <p>
+                {weather.datetime}
+
+              </p>
+              <p>
+                {weather.description}
+
+              </p>
+            </section>
+          )
+        })}
 
             
       </div>
