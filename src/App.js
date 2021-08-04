@@ -1,18 +1,19 @@
 import React, { Component } from "react";
 import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import ListGroup from "react-bootstrap/ListGroup";
-import Image from 'react-bootstrap/Image'
+import Image from "react-bootstrap/Image";
+import Card from "react-bootstrap/Card";
 
 export class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: {},
-      forecastData:[],
-      viewMap:false,
+      forecastData: [],
+      viewMap: false,
       errorMesage: false,
-      message:"Unable to geocode"
+      message: "Unable to geocode",
     };
   }
 
@@ -24,19 +25,19 @@ export class App extends Component {
       `https://eu1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${locationName}&format=json`
     );
     const locationIQData = result.data[0];
-    const forecast = await axios.get(`${process.env.REACT_APP_SERVER_URL}/weather-bit?latitude=${locationIQData.lat}&longitude=${locationIQData.lon}`)
-    try{
+    const forecast = await axios.get(
+      `${process.env.REACT_APP_SERVER_URL}/weather-bit?latitude=${locationIQData.lat}&longitude=${locationIQData.lon}`
+    );
+    try {
       this.setState({
         data: locationIQData,
-        forecastData:forecast.data,
-        viewMap: true
+        forecastData: forecast.data,
+        viewMap: true,
       });
-
-    }catch{
+    } catch {
       this.setState({
-        errorMesage: true
+        errorMesage: true,
       });
-
     }
     console.log(result.data[0]);
   };
@@ -57,43 +58,45 @@ export class App extends Component {
 
         <ListGroup>
           <ListGroup.Item variant="primary">
-          {this.state.data.lon && <p>Longitude: {this.state.data.lon}</p>}
+            {this.state.data.lon && <p>Longitude: {this.state.data.lon}</p>}
           </ListGroup.Item>
           <ListGroup.Item variant="secondary">
-          {this.state.data.lat && <p>Latitude: {this.state.data.lat}</p>}
+            {this.state.data.lat && <p>Latitude: {this.state.data.lat}</p>}
           </ListGroup.Item>
           <ListGroup.Item variant="success">
-          {this.state.data.display_name && (
-            <p>City Name: {this.state.data.display_name}</p>
-          )}
+            {this.state.data.display_name && (
+              <p>City Name: {this.state.data.display_name}</p>
+            )}
           </ListGroup.Item>
         </ListGroup>
 
-        { this.state.viewMap &&
-        <Image src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`} fluid />
-        }
-        {
-          this.state.errorMesage &&
-          this.state.message
-        }
+        {this.state.viewMap && (
+          <Image
+            src={`https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.data.lat},${this.state.data.lon}&zoom=1-18`}
+            fluid
+          />
+        )}
+        {this.state.errorMesage && this.state.message}
 
         {this.state.forecastData &&
-        this.state.forecastData.map(weather =>{
-          return(
-            <section>
-              <p>
-                {weather.date}
+          this.state.forecastData.map((weather) => {
+            return (
+              <section>
+                {/* <p>{weather.date}</p>
+                <p>{weather.description}</p> */}
+        <Card style={{ width: "18rem" }}>
+          <Card.Body>
+            <Card.Title>Weather-Bit Data 🌤️</Card.Title>
+            <Card.Text>
+            <p>{weather.date}</p>
+            <p>{weather.description}</p>
+            </Card.Text>
+          </Card.Body>
+        </Card>
+              </section>
+            );
+          })}
 
-              </p>
-              <p>
-                {weather.description}
-
-              </p>
-            </section>
-          )
-        })}
-
-            
       </div>
     );
   }
