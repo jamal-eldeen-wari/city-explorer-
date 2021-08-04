@@ -88,8 +88,8 @@ export class App extends Component {
           <Card.Body>
             <Card.Title>Weather-Bit Data 🌤️</Card.Title>
             <Card.Text>
-            <p>{weather.date}</p>
-            <p>{weather.description}</p>
+            <p>{weather.date}📅</p>
+            <p>{weather.description}📑</p>
             </Card.Text>
           </Card.Body>
         </Card>
