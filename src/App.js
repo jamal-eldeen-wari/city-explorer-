@@ -11,6 +11,7 @@ export class App extends Component {
     this.state = {
       data: {},
       forecastData: [],
+      movieData:[],
       viewMap: false,
       errorMesage: false,
       message: "Unable to geocode",
@@ -28,10 +29,16 @@ export class App extends Component {
     const forecast = await axios.get(
       `${process.env.REACT_APP_SERVER_URL}/weather-bit?latitude=${locationIQData.lat}&longitude=${locationIQData.lon}`
     );
+    const movieDBData = result.data[0].display_name.split(",")[0];
+    console.log(movieDBData);
+    const movie = await axios.get(`${process.env.REACT_APP_SERVER_URL}/movie?city=${movieDBData}`)
+    console.log(movie);
     try {
       this.setState({
         data: locationIQData,
+        results:movieDBData,
         forecastData: forecast.data,
+        movieData:movie.data,
         viewMap: true,
       });
     } catch {
@@ -96,6 +103,24 @@ export class App extends Component {
               </section>
             );
           })}
+
+         {this.state.movieData &&
+         this.state.movieData.map((mov) =>{
+           return(
+             <div>
+               <p>Title:{mov.title}</p>
+               <p>Overview{mov.overview}</p>
+               <p>Average Votes:{mov.average_votes}</p>
+               <p>Total Votes:{mov.total_votes}</p>
+               <Image src ={mov.image_url} alt="movie"/>
+               <p>Popularity:{mov.popularity}</p>
+               <p>Released:{mov.released_on}</p>
+             </div>
+           )
+
+         })
+
+         }
 
       </div>
     );
